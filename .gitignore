@@ -6,3 +6,16 @@
 # Additions by Rito
 *.cmd
 *.cmd.meta
+
+# Cpp
+*.vcxproj
+*.vcxproj.*
+
+# CSharp
+.vs/
+bin/
+obj/
+
+*.sln
+*.config
+.csproj
