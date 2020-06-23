@@ -1,14 +1,9 @@
 // https://programmers.co.kr/learn/courses/30/lessons/42576
 // 해시 - 완주하지 못한 선수
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
+#include "common.h"
 
-using namespace std;
-
-string solution(vector<string> participant, vector<string> completion)
+string solution_20200621(vector<string> participant, vector<string> completion)
 {
 	map<string, int> partMap;
 

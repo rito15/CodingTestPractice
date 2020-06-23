@@ -3,20 +3,44 @@
 
 /*
     1. 문제 정의
-        - {옷 이름, 타입} 꼴의 페어를 받아 각각의 타입별로 개별 컨테이너에 저장
-        - 타입의 개수(n), 타입별 옷의 개수(n1, n2, ...)에 따라 nCm (m = 1 ~ n)에서 (각 nCm에서 뽑아낸 값들의 곱)들을 모두 더한 값 구하기
+        - [옷 이름, 옷 종류] 형태가 이어지는 이차원 배열이 주어짐
+        - 종류가 서로 다른 옷이면 같이 입을 수 있음
+        - 최소 한 개의 옷은 입어야 함
+        - 입을 수 있는 옷 조합의 개수를 정수로 출력
 
-    2. 예시
-        - n = 1, n1 = 3                 => 3
-        - n = 2, n1 = 2, n2 = 1         => (2 + 1) + (2 * 1) => 3 + 2 => 5
-        - n = 3, n1 = 3, n2 = 2, n3 = 2 => (3 + 2 + 2) * ((3 * 2) + (2 * 2) + (2 * 3)) + (3 * 2 * 2) => 7 + 16 + 12 => 35
+    2. 입력 및 출력 예시
+        (1)
 
-    3. 풀이 전략
-        - Dictionary를 이용해 타입별 옷의 개수를 저장 : <string, int>
-        - 빠른 개수 참조를 위해 옷의 개수들을 리스트에 저장 : List<int>
-        - 정수형 리스트로부터 mCn의 모든 조합을 골라내는 메소드 구현 : int[][] Combination(List<int> list, int count)
-        - 조합 메소드를 통해 각 count별 조합 내 모든 원소의 곱의 합들 구하기
-        - 곱의 합들을 모두 더한 결과 => 정답
+         [1] 입력
+           : { 
+               {"yellow_hat",      "headgear"}, 
+               {"blue_sunglasses", "eyewear"},
+               {"green_turban",    "headgear"}
+             }
+
+         [2] 출력
+           : 5
+
+        (2)
+
+         [1] 입력
+           : { 
+               {"crow_mask",       "face"}, 
+               {"blue_sunglasses", "face"},
+               {"smoky_makeup",    "face"}
+             }
+
+         [2] 출력
+           : 3
+
+    3. 풀이 - 알고리즘
+     :   (A종류의 옷 개수 + 안입는 경우의 수(1))
+       * (B종류의 옷 개수 + 안입는 경우의 수(1))
+       * ... * (...)
+       - 아무것도 안입는 경우의 수(1)
+
+    4. 풀이 - 자료구조
+     - Dictionary<string, int>를 사용하여 각 타입별 옷 개수 저장
 */
 
 using System;
@@ -26,37 +50,32 @@ public class Solution_20200621_2
 {
     public int solution(string[,] clothes)
     {
-        // 1. 각 타입별 옷 개수 저장
-        Dictionary<string, int> clothNumbersByTypes = new Dictionary<string, int>();
+        // 각 타입별 옷 개수 저장
+        Dictionary<string, int> clothesNumbersByTypes = new Dictionary<string, int>();
 
-        // 2. 옷 개수들만 리스트에 저장
-        List<int> clothTypeNumbersList = new List<int>();
-
-        // 1. 각 타입별 옷의 개수를 딕셔너리에 저장
-        for (int i = 0; i < clothes.Length / clothes.Rank; i++)
+        for (int i = 0; i < clothes.Length / 2; i++)
         {
-            string clothType = clothes[i, 1];
+            string currentClothesType = clothes[i, 1];
 
-            if (!clothNumbersByTypes.ContainsKey(clothType))
+            // 해당 타입명을 이미 갖고 있으면 수량 + 1
+            if (clothesNumbersByTypes.ContainsKey(currentClothesType))
             {
-                clothNumbersByTypes.Add(clothType, 1);
+                clothesNumbersByTypes[currentClothesType]++;
             }
+            // 해당 타입명에 대한 수량 처음 등록(1)
             else
             {
-                clothNumbersByTypes[clothType] += 1;
+                clothesNumbersByTypes.Add(currentClothesType, 1);
             }
         }
-
-        // 2. 옷의 개수들(Value)만 뽑아 리스트에 저장
-        foreach (int value in clothNumbersByTypes.Values)
+        
+        int answer = 1;
+        foreach (int count in clothesNumbersByTypes.Values)
         {
-            clothTypeNumbersList.Add(value);
+            answer *= (count + 1);
         }
 
-        int answer = 0;
-
-        Console.WriteLine();
-        return answer;
+        return answer - 1;
     }
 
 }

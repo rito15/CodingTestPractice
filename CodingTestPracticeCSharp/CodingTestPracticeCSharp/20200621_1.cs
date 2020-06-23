@@ -1,7 +1,7 @@
 ﻿// https://programmers.co.kr/learn/courses/30/lessons/12901
 // 연습문제 - 2016년
 
-public class Solution
+public class Solution_20200621_1
 {
     public string solution(int a, int b)
     {
