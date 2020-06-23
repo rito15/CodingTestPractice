@@ -10,6 +10,7 @@
 # Cpp
 *.vcxproj
 *.vcxproj.*
+[Dd]ebug/
 
 # CSharp
 .vs/
