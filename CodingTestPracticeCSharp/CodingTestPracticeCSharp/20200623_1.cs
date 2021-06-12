@@ -1,6 +1,8 @@
 ﻿// https://programmers.co.kr/learn/courses/30/lessons/42579?language=csharp
 // 해시 - 베스트앨범
 
+// 정답 못맞춤
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,7 +38,7 @@ public class Solution_20200623_1
         Dictionary<string, List<IndexPlayCountPair>> allMusicDict = new Dictionary<string, List<IndexPlayCountPair>>();
 
         // 각 장르별 최대 재생횟수만 갱신하며 저장
-        Dictionary<string, int> maxPlaysDIct = new Dictionary<string, int>();
+        Dictionary<string, int> maxPlaysDict = new Dictionary<string, int>();
 
         for (int i = 0; i < genres.Length; i++)
         {
@@ -56,6 +58,7 @@ public class Solution_20200623_1
             // [1]보다 playCount가 큰지 비교
             if (sList[1].playCount < playCount)
             {
+                //sList[1].Set(i, playCount);
                 sList[1] = new IndexPlayCountPair(i, playCount);
 
                 if (sList[0].playCount < sList[1].playCount)
@@ -67,27 +70,26 @@ public class Solution_20200623_1
             }
 
             // 2. 각 장르별 최대 재생 횟수 갱신
-            if (!maxPlaysDIct.ContainsKey(genreName))
-                maxPlaysDIct.Add(genreName, playCount);
+            if (!maxPlaysDict.ContainsKey(genreName))
+                maxPlaysDict.Add(genreName, playCount);
             else
             {
-                if (maxPlaysDIct[genreName] < playCount)
-                    maxPlaysDIct[genreName] = playCount;
+                if (maxPlaysDict[genreName] < playCount)
+                    maxPlaysDict[genreName] = playCount;
             }
         }
 
         // 3. 반대로 <재생횟수, 장르명> 꼴 정렬 리스트 생성
         SortedList<int, string> sortedMaxPlayGenreList = new SortedList<int, string>(new ListReverser());
-        foreach (string genre in maxPlaysDIct.Keys)
+        foreach (string genre in maxPlaysDict.Keys)
         {
-            sortedMaxPlayGenreList.Add(maxPlaysDIct[genre], genre);
+            sortedMaxPlayGenreList.Add(maxPlaysDict[genre], genre);
         }
 
         // 4. 각 장르별 2개씩 뽑기
         List<int> answerList = new List<int>();
         foreach (string genreName in sortedMaxPlayGenreList.Values)
         {
-            //Console.WriteLine($"{key} - {sortedMaxPlayGenreList[key]}");
             foreach (var pair in allMusicDict[genreName])
             {
                 if (pair.index > -1) Console.WriteLine($"[{genreName}] {pair.index}, {pair.playCount}");
